@@ -1,21 +1,30 @@
 const express = require('express');
 const ejs = require('ejs');
 const app = express();
-const path = require('path');
+const path = require('path'); 
+const Photo = require('./models/Photo');
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/cleanblog', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+
+});
+
+
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
-
-const photo = {
-  id: 1,
-  name: 'Photo 1',
-  description: 'This is a photo',
-
-}
+app.use(express.urlencoded({  extended: true }));
+app.use(express.json());
 
 
-app.get('/', (req, res) => {
-  res.render('index')
+
+
+
+app.get('/', async(req, res) => {
+  const photos = await Photo.find();
+  res.render('index', { photos });
 });
 
 app.get('/about', (req, res) => {
@@ -25,6 +34,19 @@ app.get('/about', (req, res) => {
 app.get('/contact', (req, res) => {
   res.render('contact')
 });
+app.post('/photos', async(req, res) => {
+  console.log('====================================');
+  console.log(req.body);
+  console.log('====================================');
+  await Photo.create(req.body);
+  res.redirect('/');
+})
+
+app.get('/photos/:id', async(req, res) => {
+  const photo = await Photo.findById(req.params.id);
+  res.render('photo.ejs', { photo }); 
+})
+
 
 const port = 3000;
 app.listen(port, () => {
