@@ -44,7 +44,7 @@ app.get('/photos/edit/:id', photoController.getEditPhoto)
 
 app.get('/about', pageController.getAboutPage);
 
-app.get('/contact',pageController.getAddPhoto);
+app.get('/add',pageController.getAddPhoto);
 
 const port = 3000;
 app.listen(port, () => {
