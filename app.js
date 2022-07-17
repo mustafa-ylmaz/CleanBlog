@@ -16,7 +16,7 @@ const pageController = require('./controllers/pageController');
 const methodOverride = require('method-override');
 
 
-mongoose.connect('mongodb://localhost/cleanblog', {
+mongoose.connect('mongodb+srv://mustafaylmaz:asdfasdf123@cluster0.ydbwz.mongodb.net/?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 
@@ -46,7 +46,7 @@ app.get('/about', pageController.getAboutPage);
 
 app.get('/add',pageController.getAddPhoto);
 
-const port = 3000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
